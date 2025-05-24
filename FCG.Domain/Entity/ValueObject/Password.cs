@@ -1,6 +1,6 @@
 ﻿using SecureIdentity.Password;
 
-namespace FCG.Domain.ValueObject;
+namespace FCG.Domain.Entity.ValueObject;
 
 public partial class Password
 {
