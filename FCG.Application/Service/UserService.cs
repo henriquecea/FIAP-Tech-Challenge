@@ -32,13 +32,14 @@ public class UserService : IUserService
             return new BadRequestObjectResult(ex.Message);
         }
     }
+
     public async Task<IActionResult> CreateUser(UserModel userModal)
     {
         try
         {
             var newUser = new UserEntity(userModal.Name,
-                     new EmailAddress(userModal.EmailAddress),
-                     new Password(userModal.Password));
+                          new EmailAddress(userModal.EmailAddress),
+                          new Password(userModal.Password));
 
             await _userRepository.AddAsync(newUser);
             await _userRepository.SaveChangesAsync();
