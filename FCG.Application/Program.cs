@@ -1,44 +1,39 @@
+using FCG.Application.Service;
 using FCG.Domain.Interface;
-using FCG.Domain.Service;
-using FCG.Infrastructure.Data;
 using FCG.Infrastructure.Repository;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using FCG.WebAPI.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AppDbContext>(x =>
-{
-    x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+// Serviços customizados
+builder.AddSwagger();
+builder.AddJwtAuthentication();
+builder.AddDbContext();
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Tech Challenge - Parte 1",
-        Version = "v1",
-        Description = "Exemplo de integração com Swagger"
-    });
-});
-
+// Serviços padrão ASP.NET
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
+// Injeção de dependência (DI)
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 
-app.MapControllers();
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Redirecionamento da raiz para /swagger
 app.MapGet("/", context =>
 {
     context.Response.Redirect("/swagger");
     return Task.CompletedTask;
 });
+
+// Autenticação e Autorização
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

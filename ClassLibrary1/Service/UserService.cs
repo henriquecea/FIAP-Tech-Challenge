@@ -1,10 +1,11 @@
 ﻿using FCG.Domain.Entity;
+using FCG.Domain.Entity.ValueObject;
 using FCG.Domain.Interface;
 using FCG.Domain.Model;
 using FCG.Domain.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FCG.Domain.Service;
+namespace FCG.Application.Service;
 
 public class UserService : IUserService
 {
@@ -49,7 +50,6 @@ public class UserService : IUserService
             return new BadRequestObjectResult(ex.Message);
         }
     }
-
 
     public async Task<IActionResult> DeleteUserById(int userId)
     {
