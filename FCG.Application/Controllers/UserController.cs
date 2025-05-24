@@ -2,7 +2,7 @@
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FCG.Application.Controllers;
+namespace FCG.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

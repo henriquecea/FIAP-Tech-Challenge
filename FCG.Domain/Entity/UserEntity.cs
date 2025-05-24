@@ -1,4 +1,5 @@
-﻿using FCG.Domain.ValueObject;
+﻿using FCG.Domain.Entity.ValueObject;
+using FCG.Domain.ValueObject;
 
 namespace FCG.Domain.Entity;
 
