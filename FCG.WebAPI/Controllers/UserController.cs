@@ -1,4 +1,6 @@
-﻿using FCG.Domain.Interface.Service;
+﻿using FCG.Application.Service;
+using FCG.Domain.Dto;
+using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +15,7 @@ public class UserController : ControllerBase
 
     public UserController(IUserService userService)
     {
-        _userService = userService;
+        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
 
     [Authorize(Roles = "Admin")]
@@ -25,7 +27,7 @@ public class UserController : ControllerBase
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int userId) =>
         await _userService.DeleteUserById(userId);
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> RegisterUser(UserModel userRequest) =>
         await _userService.CreateUser(userRequest);
@@ -33,4 +35,9 @@ public class UserController : ControllerBase
     [HttpPost("authentication")]
     public async Task<IActionResult> AuthenticationUser(UserModel userRequest) =>
         await _userService.AuthenticateUser(userRequest);
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("roles/attribute")]
+    public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
+        await _userService.AttributeRoles(roles);
 }

@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Configuration;
+using FCG.Domain.Dto;
 using FCG.Domain.Entity;
 using FCG.Domain.Entity.ValueObject;
 using FCG.Domain.Interface.Repository;
@@ -56,7 +57,7 @@ public class UserService : IUserService
     {
         try
         {
-            var newUser = new UserEntity(userModal.Name,
+            var newUser = new UserEntity(userModal.Name!,
                           new EmailAddress(userModal.EmailAddress),
                           new Password(userModal.Password));
 
@@ -117,6 +118,11 @@ public class UserService : IUserService
             _logger.LogError("Erro ao autenticar usuário: {Message}", ex.Message);
             return new BadRequestObjectResult(ex.Message);
         }
+    }
+
+    public Task<IActionResult> AttributeRoles(CreateRoleDto roles)
+    {
+        throw new NotImplementedException();
     }
 
     private string GenerateToken(UserEntity user)

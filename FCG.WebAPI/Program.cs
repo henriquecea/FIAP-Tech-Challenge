@@ -17,6 +17,8 @@ builder.Services.AddControllers();
 
 // Injeção de dependência
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IGameService, GameService>();
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

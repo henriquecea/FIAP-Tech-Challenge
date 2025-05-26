@@ -1,4 +1,5 @@
-﻿using FCG.Domain.Model;
+﻿using FCG.Domain.Dto;
+using FCG.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FCG.Domain.Interface.Service;
@@ -12,4 +13,6 @@ public interface IUserService
     Task<IActionResult> DeleteUserById(int userId);
 
     Task<IActionResult> AuthenticateUser(UserModel userRequest);
+
+    Task<IActionResult> AttributeRoles(CreateRoleDto roles);
 }
