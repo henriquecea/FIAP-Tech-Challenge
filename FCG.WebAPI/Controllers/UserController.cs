@@ -16,12 +16,12 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser([FromRoute] int userId) =>
         await _userService.GetUserById(userId);
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int userId) =>
         await _userService.DeleteUserById(userId);
