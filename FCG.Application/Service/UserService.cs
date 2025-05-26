@@ -1,19 +1,36 @@
-﻿using FCG.Domain.Entity;
+﻿using FCG.Domain.Configuration;
+using FCG.Domain.Entity;
 using FCG.Domain.Entity.ValueObject;
-using FCG.Domain.Interface;
+using FCG.Domain.Interface.Repository;
+using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
 using FCG.Domain.ValueObject;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using SecureIdentity.Password;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace FCG.Application.Service;
 
 public class UserService : IUserService
 {
-    private readonly IRepository<UserEntity> _userRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IConfiguration _configuration;
 
-    public UserService(IRepository<UserEntity> userRepository)
+    private readonly JwtSettings _jwtSettings;
+
+    public UserService(IUserRepository userRepository,
+                       IConfiguration configuration,
+                       IOptions<JwtSettings> jwtSettings)
     {
         _userRepository = userRepository;
+        _configuration = configuration;
+
+        _jwtSettings = jwtSettings.Value;
     }
 
     public async Task<IActionResult> GetUserById(int userId)
@@ -44,7 +61,7 @@ public class UserService : IUserService
             await _userRepository.AddAsync(newUser);
             await _userRepository.SaveChangesAsync();
 
-            return new OkObjectResult(newUser);
+            return new OkObjectResult("Usuário registrado com sucesso!");
         }
         catch (Exception ex)
         {
@@ -70,5 +87,47 @@ public class UserService : IUserService
         {
             return new BadRequestObjectResult(ex.Message);
         }
+    }
+
+    public async Task<IActionResult> AuthenticateUser(UserModel userRequest)
+    {
+        try
+        {
+            var user = await _userRepository.GetByEmailAsync(userRequest.EmailAddress);
+
+            if (user == null)
+                return new NotFoundObjectResult("O usúario não existe.");
+
+            var hashPassword = PasswordHasher.Hash(userRequest.Password);
+
+            if (PasswordHasher.Verify(user.Password.Hash, hashPassword))
+                return new BadRequestObjectResult("Usuário ou senha incorretos.");
+
+            return new OkObjectResult(GenerateToken(user));
+        }
+        catch (Exception ex)
+        {
+            return new BadRequestObjectResult(ex.Message);
+        }
+    }
+
+    private string GenerateToken(UserEntity user)
+    {
+        var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.SecretKey));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Email, user.EmailAddress.Address)
+        };
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(1),
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

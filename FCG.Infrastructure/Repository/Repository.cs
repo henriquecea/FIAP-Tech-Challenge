@@ -1,4 +1,4 @@
-﻿using FCG.Domain.Interface;
+﻿using FCG.Domain.Interface.Repository;
 using FCG.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

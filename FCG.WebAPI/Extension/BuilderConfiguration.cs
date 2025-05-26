@@ -1,4 +1,5 @@
-﻿using FCG.Infrastructure.Data;
+﻿using FCG.Domain.Configuration;
+using FCG.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,6 +18,11 @@ public static class BuilderConfiguration
 
     public static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+
+        var key = Encoding.ASCII.GetBytes(jwtSettings!.SecretKey);
+
         builder.Services
             .AddAuthentication(x =>
             {
@@ -29,7 +35,7 @@ public static class BuilderConfiguration
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("uma-chave-secreta-super-segura")),
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };

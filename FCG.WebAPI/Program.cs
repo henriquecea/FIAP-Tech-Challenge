@@ -1,5 +1,6 @@
 using FCG.Application.Service;
-using FCG.Domain.Interface;
+using FCG.Domain.Interface.Repository;
+using FCG.Domain.Interface.Service;
 using FCG.Infrastructure.Repository;
 using FCG.WebAPI.Extension;
 
@@ -14,8 +15,10 @@ builder.AddDbContext();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// Injeção de dependência (DI)
+// Injeção de dependência
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();

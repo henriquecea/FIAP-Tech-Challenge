@@ -2,7 +2,7 @@
 
 public class UserModel
 {
-    public string Name { get; set; } = default!;
+    public string? Name { get; set; } = default!;
 
     public string EmailAddress { get; set; } = default!;
 

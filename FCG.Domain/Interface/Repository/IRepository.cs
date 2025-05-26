@@ -1,4 +1,4 @@
-﻿namespace FCG.Domain.Interface;
+﻿namespace FCG.Domain.Interface.Repository;
 
 public interface IRepository<T> where T : class
 {

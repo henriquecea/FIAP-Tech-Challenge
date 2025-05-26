@@ -1,4 +1,4 @@
-﻿using FCG.Domain.Interface;
+﻿using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,4 +26,8 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> RegisterUser(UserModel userRequest) =>
         await _userService.CreateUser(userRequest);
+
+    [HttpPost("authentication")]
+    public async Task<IActionResult> AuthenticationUser(UserModel userRequest) =>
+        await _userService.AuthenticateUser(userRequest);
 }
