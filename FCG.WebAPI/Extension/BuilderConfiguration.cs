@@ -19,6 +19,7 @@ public static class BuilderConfiguration
     public static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
         builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
         var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
 
         var key = Encoding.ASCII.GetBytes(jwtSettings!.SecretKey);
@@ -30,16 +31,18 @@ public static class BuilderConfiguration
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = false;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true
+                    };
+                }
+            );
         builder.Services.AddAuthorization();
     }
 

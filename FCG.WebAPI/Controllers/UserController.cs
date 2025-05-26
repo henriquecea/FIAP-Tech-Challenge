@@ -1,5 +1,6 @@
 ﻿using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FCG.WebAPI.Controllers;
@@ -15,10 +16,12 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser([FromRoute] int userId) =>
         await _userService.GetUserById(userId);
 
+    [Authorize]
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int userId) =>
         await _userService.DeleteUserById(userId);
