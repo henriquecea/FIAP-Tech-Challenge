@@ -1,5 +1,4 @@
-﻿using FCG.Application.Service;
-using FCG.Domain.Dto;
+﻿using FCG.Domain.Dto;
 using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +16,8 @@ public class UserController : ControllerBase
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
     }
+
+    #region User CRUD
 
     [Authorize(Roles = "Admin")]
     [HttpGet("{userId}")]
@@ -36,8 +37,24 @@ public class UserController : ControllerBase
     public async Task<IActionResult> AuthenticationUser(UserModel userRequest) =>
         await _userService.AuthenticateUser(userRequest);
 
+    #endregion
+
+    #region Roles CRUD
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("roles")]
+    public async Task<IActionResult> GetAllRoles() =>
+        await _userService.GetAllRoles();
+
     [Authorize(Roles = "Admin")]
     [HttpPost("roles/attribute")]
     public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
         await _userService.AttributeRoles(roles);
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("roles/create")]
+    public async Task<IActionResult> CreateRoles(CreateRoleDto roles) =>
+        await _userService.CreateRoles(roles);
+
+    #endregion
 }

@@ -11,6 +11,11 @@ public class GameMap : IEntityTypeConfiguration<GameEntity>
         builder.ToTable("Game");
 
         builder.HasKey(p => p.Id);
+        
+        builder.Property(x => x.Id)
+            .HasColumnName("Id")
+            .HasDefaultValueSql("NEWSEQUENTIALID()")
+            .ValueGeneratedOnAdd();
 
         builder.Property(p => p.Name)
             .HasMaxLength(100)
