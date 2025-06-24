@@ -10,5 +10,7 @@ public class UserRepository : Repository<UserEntity>, IUserRepository
     public UserRepository(AppDbContext context) : base(context) { }
 
     public async Task<UserEntity?> GetByEmailAsync(string email) =>
-        await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.EmailAddress.Address == email);
+        await _dbSet.AsNoTracking()
+                    .Include(x => x.Roles)
+                    .FirstOrDefaultAsync(x => x.EmailAddress.Address == email);
 }

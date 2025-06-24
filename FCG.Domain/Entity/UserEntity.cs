@@ -19,4 +19,6 @@ public class UserEntity : BaseEntity
     public EmailAddress EmailAddress { get; set; } = null!;
 
     public Password Password { get; set; } = null!;
+
+    public ICollection<RoleEntity> Roles { get; set; } = new List<RoleEntity>();
 }

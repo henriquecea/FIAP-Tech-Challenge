@@ -30,14 +30,12 @@ public class GameController : ControllerBase
         throw new NotImplementedException();
     }
 
-    [Authorize(Roles = "Admin, User")]
     [HttpGet()]
     public Task<IEnumerable<GameModel>> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    [Authorize(Roles = "Admin, User")]
     [HttpGet("{gameId}")]
     public Task<GameModel> GetById(int gameId)
     {

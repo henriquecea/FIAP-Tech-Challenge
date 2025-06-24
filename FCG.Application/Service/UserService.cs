@@ -20,19 +20,25 @@ namespace FCG.Application.Service;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IRepository<RoleEntity> _roleRepository;
+
     private readonly ILogger<UserService> _logger;
 
     private readonly JwtSettings _jwtSettings;
 
     public UserService(IUserRepository userRepository,
+                       IRepository<RoleEntity> roleRepository,
                        IOptions<JwtSettings> jwtSettings,
                        ILogger<UserService> logger)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
         _logger = logger;
 
         _jwtSettings = jwtSettings.Value;
     }
+
+    #region User CRUD
 
     public async Task<IActionResult> GetUserById(int userId)
     {
@@ -120,21 +126,22 @@ public class UserService : IUserService
         }
     }
 
-    public Task<IActionResult> AttributeRoles(CreateRoleDto roles)
-    {
-        throw new NotImplementedException();
-    }
-
     private string GenerateToken(UserEntity user)
     {
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtSettings.SecretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+        var roleClaims = user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Name));
+
         var claims = new[]
         {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Email, user.EmailAddress.Address)
-        };
+        }
+         .Union(roleClaims)
+         .ToList();
 
         var token = new JwtSecurityToken(
             claims: claims,
@@ -144,4 +151,66 @@ public class UserService : IUserService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    #endregion
+
+    #region Roles CRUD
+
+    public async Task<IActionResult> AttributeRoles(CreateRoleDto roles)
+    {
+        try
+        {
+            var user = await _userRepository.GetByIdAsync(roles.UserId);
+
+            if (user is null)
+                return new NotFoundObjectResult("O usuário não existe.");
+
+            //await _roleRepository.AddAsync(new RoleEntity()
+            //{
+            //    Users = user.Id
+            //});
+
+            _logger.LogInformation("Roles adicionadas para o usuário {Name}", user.Name);
+            return new OkObjectResult($"Roles adicionadas ao usuário {user.Name}!");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Erro ao adicionar Roles no usuário: {Message}", ex.Message);
+            return new BadRequestObjectResult(ex.Message);
+        }
+    }
+
+    public async Task<IActionResult> GetAllRoles()
+    {
+        try
+        {
+            var roles = await _roleRepository.GetAllAsync();
+
+            return new OkObjectResult(roles.Select(role => new
+            {
+                role.Id,
+                role.Name,
+            }));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Erro ao buscar Roles: {Message}", ex.Message);
+            return new BadRequestObjectResult(ex.Message);
+        }
+    }
+
+    public async Task<IActionResult> CreateRoles(CreateRoleDto roles)
+    {
+        try
+        {
+            return new OkObjectResult("Método CreateRoles não implementado ainda.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Erro ao criar nova Role: {Message}", ex.Message);
+            return new BadRequestObjectResult(ex.Message);
+        }
+    }
+
+    #endregion
 }
