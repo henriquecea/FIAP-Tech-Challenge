@@ -10,4 +10,11 @@ public interface IUserRepository : IRepository<UserEntity>
     /// <param name="email">The email address of the user to retrieve.</param>
     /// <returns>The user entity if found; otherwise, null.</returns>
     Task<UserEntity?> GetByEmailAsync(string email);
+
+    /// <summary>
+    /// Search All entity for User
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<UserEntity?> GetAllUser(Guid id);
 }

@@ -21,12 +21,17 @@ public class UserController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUser([FromRoute] int userId) =>
+    public async Task<IActionResult> GetUser([FromRoute] Guid userId) =>
         await _userService.GetUserById(userId);
 
     [Authorize(Roles = "Admin")]
+    [HttpGet("")]
+    public async Task<IActionResult> GetAllUsers() =>
+        await _userService.GetAllUsers();
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{userId}")]
-    public async Task<IActionResult> DeleteUser([FromRoute] int userId) =>
+    public async Task<IActionResult> DeleteUser([FromRoute] Guid userId) =>
         await _userService.DeleteUserById(userId);
 
     [HttpPost("register")]
@@ -47,14 +52,19 @@ public class UserController : ControllerBase
         await _userService.GetAllRoles();
 
     [Authorize(Roles = "Admin")]
-    [HttpPost("roles/attribute")]
+    [HttpPatch("roles")]
     public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
         await _userService.AttributeRoles(roles);
 
     [Authorize(Roles = "Admin")]
-    [HttpPost("roles/create")]
-    public async Task<IActionResult> CreateRoles(CreateRoleDto roles) =>
-        await _userService.CreateRoles(roles);
+    [HttpPost("roles")]
+    public async Task<IActionResult> CreateRoles(IEnumerable<string> rolesName) =>
+        await _userService.CreateRoles(rolesName);
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("roles")]
+    public async Task<IActionResult> DeleteRoles(IEnumerable<Guid> rolesId) =>
+        await _userService.DeleteRoles(rolesId);
 
     #endregion
 }

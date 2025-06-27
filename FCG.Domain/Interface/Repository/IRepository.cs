@@ -7,7 +7,7 @@ public interface IRepository<T> where T : class
     /// </summary>
     /// <param name="id">The ID of the entity to retrieve.</param>
     /// <returns>The entity with the specified ID.</returns>
-    Task<T> GetByIdAsync(int id);
+    Task<T> GetByIdAsync(Guid id);
 
     /// <summary>
     /// Retrieves all entities asynchronously.

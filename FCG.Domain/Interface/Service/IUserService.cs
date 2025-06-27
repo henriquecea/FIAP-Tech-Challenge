@@ -6,12 +6,14 @@ namespace FCG.Domain.Interface.Service;
 
 public interface IUserService
 {
+    #region User CRUD 
+
     /// <summary>
     /// Retrieves a user by their ID.
     /// </summary>
     /// <param name="userId">The ID of the user to retrieve.</param>
     /// <returns>The action result containing the requested user.</returns>
-    Task<IActionResult> GetUserById(int userId);
+    Task<IActionResult> GetUserById(Guid userId);
 
     /// <summary>
     /// Creates a new user.
@@ -25,7 +27,7 @@ public interface IUserService
     /// </summary>
     /// <param name="userId">The ID of the user to delete.</param>
     /// <returns>The action result of the deletion.</returns>
-    Task<IActionResult> DeleteUserById(int userId);
+    Task<IActionResult> DeleteUserById(Guid userId);
 
     /// <summary>
     /// Authenticates a user with the provided credentials.
@@ -33,6 +35,16 @@ public interface IUserService
     /// <param name="userRequest">The user data for authentication.</param>
     /// <returns>The action result of the authentication process.</returns>
     Task<IActionResult> AuthenticateUser(UserModel userRequest);
+
+    /// <summary>
+    /// Get All Users
+    /// </summary>
+    /// <returns></returns>
+    Task<IActionResult> GetAllUsers();
+    
+    #endregion
+
+    #region Roles CRUD
 
     /// <summary>
     /// Assigns roles to a user.
@@ -52,6 +64,15 @@ public interface IUserService
     /// </summary>
     /// <param name="roles">The roles data to create.</param>
     /// <returns>The action result of the role creation.</returns>
-    Task<IActionResult> CreateRoles(CreateRoleDto roles);
+    Task<IActionResult> CreateRoles(IEnumerable<string> rolesName);
+
+    /// <summary>
+    /// Delete roles by their IDs.
+    /// </summary>
+    /// <param name="rolesID"></param>
+    /// <returns></returns>
+    Task<IActionResult> DeleteRoles(IEnumerable<Guid> rolesID);
+
+    #endregion
 }
 
