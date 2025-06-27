@@ -15,7 +15,7 @@ public class Repository<T> : IRepository<T> where T : class
         _dbSet = context.Set<T>();
     }
 
-    public async Task<T> GetByIdAsync(int id) =>
+    public async Task<T> GetByIdAsync(Guid id) =>
         await _dbSet.FindAsync(id);
 
     public async Task<IEnumerable<T>> GetAllAsync() =>

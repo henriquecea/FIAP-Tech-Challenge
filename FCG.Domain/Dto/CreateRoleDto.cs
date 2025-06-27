@@ -1,8 +1,12 @@
-﻿namespace FCG.Domain.Dto;
+﻿using Newtonsoft.Json;
+
+namespace FCG.Domain.Dto;
 
 public class CreateRoleDto
 {
-    public int UserId { get; set; }
+    [JsonProperty("user_id")]
+    public Guid UserId { get; set; } = default!;
 
-    public IEnumerable<string> Roles { get; set; } = [];
+    [JsonProperty("roles_id")]
+    public IEnumerable<Guid> Roles { get; set; } = [];
 }

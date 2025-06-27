@@ -13,7 +13,8 @@ builder.AddDbContext();
 
 // Serviços padrão ASP.NET
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+       .AddNewtonsoftJson();
 
 // Injeção de dependência
 builder.Services.AddScoped<IUserService, UserService>();
