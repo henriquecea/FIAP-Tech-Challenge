@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SecureIdentity.Password;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -193,7 +194,7 @@ public class UserService : IUserService
 
         try
         {
-            var user = await _userRepository.GetByIdAsync(roles.UserId);
+            var user = await _userRepository.GetAllUser(roles.UserId);
 
             if (user is null)
                 return new NotFoundObjectResult("O usuário não existe.");
@@ -212,6 +213,7 @@ public class UserService : IUserService
                 {
                     user.Roles.Add(role);
                     response.Add($"Role '{role.Name}' adicionada ao usuário {user.Name} com sucesso!");
+                    continue;
                 }
             }
 
@@ -305,6 +307,43 @@ public class UserService : IUserService
         }
     }
 
+    public async Task<IActionResult> DeleteAttributeRole(CreateRoleDto data)
+    {
+        var response = new List<string>();
+
+        try
+        {
+            var user = await _userRepository.GetAllUser(data.UserId);
+
+            if (user is null)
+                return new NotFoundObjectResult("O usuário não existe.");
+
+            foreach (var item in data.Roles)
+            {
+                var roleToRemove = user.Roles.FirstOrDefault(r => r.Id == item);
+
+                if (roleToRemove == null)
+                {
+                    response.Add($"Role com ID: '{item}' não existe no usuário.");
+                    continue;
+                }
+
+                user.Roles.Remove(roleToRemove);
+                response.Add($"Role '{roleToRemove.Name}' removida do usuário {user.Name} com sucesso!");
+            }
+
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+
+            _logger.LogInformation("Roles removidas para o usuário {Name}", user.Name);
+            return new OkObjectResult(response);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Erro ao remover Roles no usuário: {Message}", ex.Message);
+            return new BadRequestObjectResult(ex.Message);
+        }
+    }
 
     #endregion
 }

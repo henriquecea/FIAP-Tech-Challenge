@@ -25,7 +25,7 @@ public class UserController : ControllerBase
         await _userService.GetUserById(userId);
 
     [Authorize(Roles = "Admin")]
-    [HttpGet("")]
+    [HttpGet()]
     public async Task<IActionResult> GetAllUsers() =>
         await _userService.GetAllUsers();
 
@@ -52,11 +52,6 @@ public class UserController : ControllerBase
         await _userService.GetAllRoles();
 
     [Authorize(Roles = "Admin")]
-    [HttpPatch("roles")]
-    public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
-        await _userService.AttributeRoles(roles);
-
-    [Authorize(Roles = "Admin")]
     [HttpPost("roles")]
     public async Task<IActionResult> CreateRoles(IEnumerable<string> rolesName) =>
         await _userService.CreateRoles(rolesName);
@@ -65,6 +60,16 @@ public class UserController : ControllerBase
     [HttpDelete("roles")]
     public async Task<IActionResult> DeleteRoles(IEnumerable<Guid> rolesId) =>
         await _userService.DeleteRoles(rolesId);
+
+    [Authorize(Roles = "Admin")]
+    [HttpPatch("roles/attribute")]
+    public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
+        await _userService.AttributeRoles(roles);
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("roles/attribute")]
+    public async Task<IActionResult> DeleteAttributeRole(CreateRoleDto roles) =>
+        await _userService.DeleteAttributeRole(roles);
 
     #endregion
 }
