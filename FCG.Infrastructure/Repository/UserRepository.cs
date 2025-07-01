@@ -15,7 +15,6 @@ public class UserRepository : Repository<UserEntity>, IUserRepository
                     .FirstOrDefaultAsync(x => x.EmailAddress.Address == email);
 
     public async Task<UserEntity?> GetAllUser(Guid id) =>
-        await _dbSet.AsNoTracking()
-                  .Include(x => x.Roles)
-                  .FirstOrDefaultAsync(x => x.Id == id);
+        await _dbSet.Include(x => x.Roles)
+                    .FirstOrDefaultAsync(x => x.Id == id);
 }

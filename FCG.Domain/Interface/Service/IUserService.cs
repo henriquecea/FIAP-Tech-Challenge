@@ -73,6 +73,13 @@ public interface IUserService
     /// <returns></returns>
     Task<IActionResult> DeleteRoles(IEnumerable<Guid> rolesID);
 
+    /// <summary>
+    /// Deletes roles from a user.
+    /// </summary>
+    /// <param name="roles"></param>
+    /// <returns></returns>
+    Task<IActionResult> DeleteAttributeRole(CreateRoleDto data);
+
     #endregion
 }
 
