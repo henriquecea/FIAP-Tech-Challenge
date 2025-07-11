@@ -2,6 +2,17 @@
 
 public class RoleEntity : BaseEntity
 {
+    public RoleEntity(string name)
+    {
+        Name = name;
+    }
+
+    public RoleEntity(string name, ICollection<UserEntity> users)
+    {
+        Name = name;
+        Users = users;
+    }
+
     public string Name { get; set; } = string.Empty;
 
     public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();

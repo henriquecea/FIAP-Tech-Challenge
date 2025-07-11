@@ -257,7 +257,7 @@ public class UserService : IUserService
         {
             foreach (var item in rolesName)
             {
-                await _roleRepository.AddAsync(new RoleEntity() { Name = item });
+                await _roleRepository.AddAsync(new RoleEntity(item));
 
                 response.Add($"Role '{item}' criada com sucesso!");
             }
