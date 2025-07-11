@@ -12,13 +12,14 @@ public class UserEntity : BaseEntity
         Name = name;
         EmailAddress = emailAddress;
         Password = password;
+        Roles = [];
     }
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; }
 
-    public EmailAddress EmailAddress { get; set; } = null!;
+    public EmailAddress EmailAddress { get; set; }
 
-    public Password Password { get; set; } = null!;
+    public Password Password { get; set; }
 
-    public ICollection<RoleEntity> Roles { get; set; } = new List<RoleEntity>();
+    public ICollection<RoleEntity>? Roles { get; set; } = new List<RoleEntity>();
 }
