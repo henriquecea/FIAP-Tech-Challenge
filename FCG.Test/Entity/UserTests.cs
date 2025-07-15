@@ -1,8 +1,6 @@
 ﻿using FCG.Domain.Entity;
 using FCG.Domain.Entity.ValueObject;
 using FCG.Domain.ValueObject;
-using System.Data;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace FCG.Test.Entity;
 
@@ -27,5 +25,19 @@ public sealed class UserTests
         _role.Users?.Add(_user);
 
         Assert.IsTrue(_role!.Users!.Contains(_user));
+    }
+
+    [TestCategory("Domain")]
+    [TestMethod("Create User with Valid Email")]
+    public void CreateUser_ShouldHaveValidEmail()
+    {
+        Assert.AreEqual("henrique@gmail.com", _user.EmailAddress.Address);
+    }
+
+    [TestCategory("Domain")]
+    [TestMethod("Create User with Valid Password Format")]
+    public void CreateUser_ShouldHavePasswordWithValidFormat()
+    {
+        Assert.AreEqual("abc123@", _user.Password.Hash);
     }
 }
