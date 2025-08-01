@@ -6,10 +6,10 @@ public partial class Password
 {
     protected Password() { }
 
-    public Password(string? text = null)
+    public Password(string text)
     {
         if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            throw new Exception("Password is invalid or null.");
+            throw new ArgumentException("Password is invalid or null.", nameof(text));
 
         Hash = PasswordHasher.Hash(text);
     }

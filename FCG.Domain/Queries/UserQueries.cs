@@ -14,8 +14,8 @@ public static class UserQueries
         => u => u.EmailAddress.Address.Equals(email, StringComparison.CurrentCultureIgnoreCase);
 
     // Buscar usuário ativo
-    public static Expression<Func<UserEntity, bool>> IsActive() 
-        => u => u.IsDeleted == false;
+    public static Expression<Func<UserEntity, bool>> IsActive()
+        => u => u.IsDeleted;
 
     // Buscar usuários criados depois de uma certa data
     public static Expression<Func<UserEntity, bool>> CreatedAfter(DateTime date) 

@@ -11,13 +11,13 @@ public partial class EmailAddress
     public EmailAddress(string address)
     {
         if (string.IsNullOrEmpty(address))
-            throw new Exception("Email address is required");
+            throw new ArgumentNullException(nameof(address), "Email address is required.");
 
         if (address.Length < 5)
-            throw new Exception("Email address is too short");
+            throw new ArgumentException("Email address is too short.", nameof(address));
 
         if (!EmailRegex().IsMatch(address))
-            throw new Exception("Email is invalid");
+            throw new ArgumentException("Email is invalid.", nameof(address));
 
         Address = address.Trim().ToLower();
     }
