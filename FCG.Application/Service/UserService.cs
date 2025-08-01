@@ -65,7 +65,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao buscar usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao buscar usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -86,7 +86,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao criar usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao criar usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -108,7 +108,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao deletar usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao deletar usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -132,7 +132,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao autenticar usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao autenticar usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -153,7 +153,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao buscar Roles: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao buscar roles do usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -213,7 +213,6 @@ public class UserService : IUserService
                 {
                     user.Roles.Add(role);
                     response.Add($"Role '{role.Name}' adicionada ao usuário {user.Name} com sucesso!");
-                    continue;
                 }
             }
 
@@ -225,7 +224,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao adicionar Roles no usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao adicionar roles para o usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -244,7 +243,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao buscar Roles: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao buscar roles.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -268,7 +267,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao criar nova Role: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao criar novas roles para o usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -302,7 +301,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao criar nova Role: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao deletar role.");
             return new BadRequestObjectResult(ex.Message);
         }
     }
@@ -340,7 +339,7 @@ public class UserService : IUserService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Erro ao remover Roles no usuário: {Message}", ex.Message);
+            _logger.LogError(ex, "Erro ao remover role do usuário.");
             return new BadRequestObjectResult(ex.Message);
         }
     }

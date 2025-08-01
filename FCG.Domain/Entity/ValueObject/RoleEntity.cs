@@ -13,7 +13,7 @@ public class RoleEntity : BaseEntity
         Users = users;
     }
 
-    public string Name { get; set; } = string.Empty;
+    public string? Name { get; set; }
 
     public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();
 }
