@@ -7,6 +7,7 @@ COPY FCG.WebAPI/ FCG.WebAPI/
 COPY FCG.Application/ FCG.Application/
 COPY FCG.Domain/ FCG.Domain/
 COPY FCG.Infrastructure/ FCG.Infrastructure/
+COPY FCG.WebAPI/FCG.Application.sln FCG.Application.sln
 
 # Restaurar dependências e compilar
 WORKDIR /src/FCG.WebAPI
