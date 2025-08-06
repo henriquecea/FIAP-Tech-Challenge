@@ -44,7 +44,7 @@ public class FakeUserRepository : IUserRepository
         return Task.FromResult(user);
     }
 
-    public Task SaveChangesAsync() 
+    public Task SaveChangesAsync()
         => Task.CompletedTask;
 
     public void Update(UserEntity entity)
