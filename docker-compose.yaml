@@ -7,10 +7,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=fcg-repository;User ID=sa;Password=sa;Trusted_Connection=False;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=fcg-repository;User ID=sa;Password=NovaSenhaForte123!;Trusted_Connection=False;TrustServerCertificate=True;
     depends_on:
       - sqlserver
     restart: always
@@ -20,7 +20,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=SuaSenhaForte123!
+      - SA_PASSWORD=NovaSenhaForte123!
       - MSSQL_PID=Express
     ports:
       - "1433:1433"
