@@ -1,0 +1,32 @@
+name: fgc-api
+
+services:
+  fcg-webapi:
+    container_name: fcg-webapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=fcg-repository;User ID=sa;Password=sa;Trusted_Connection=False;TrustServerCertificate=True;
+    depends_on:
+      - sqlserver
+    restart: always
+
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SuaSenhaForte123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+    restart: always
+
+volumes:
+  sqlserverdata:

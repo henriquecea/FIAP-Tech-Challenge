@@ -41,7 +41,7 @@ public interface IUserService
     /// </summary>
     /// <returns></returns>
     Task<IActionResult> GetAllUsers();
-    
+
     #endregion
 
     #region Roles CRUD
