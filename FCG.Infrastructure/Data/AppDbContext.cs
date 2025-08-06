@@ -14,6 +14,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder.ApplyConfiguration(new UserMap());
+        modelBuilder.ApplyConfiguration(new GameMap());
+        modelBuilder.ApplyConfiguration(new RoleMap());
     }
 }

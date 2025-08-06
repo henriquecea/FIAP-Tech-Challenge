@@ -1,8 +1,10 @@
 using FCG.Application.Service;
 using FCG.Domain.Interface.Repository;
 using FCG.Domain.Interface.Service;
+using FCG.Infrastructure.Data;
 using FCG.Infrastructure.Repository;
 using FCG.WebAPI.Extension;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,13 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
+
+// Aplicar migrações pendentes ao iniciar a aplicações
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
