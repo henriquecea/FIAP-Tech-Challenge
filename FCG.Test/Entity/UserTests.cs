@@ -1,7 +1,6 @@
 ﻿using FCG.Domain.Entity;
 using FCG.Domain.Entity.ValueObject;
 using FCG.Domain.ValueObject;
-using SecureIdentity.Password;
 
 namespace FCG.Test.Entity;
 
