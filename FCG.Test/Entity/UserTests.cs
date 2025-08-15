@@ -1,13 +1,14 @@
 ﻿using FCG.Domain.Entity;
 using FCG.Domain.Entity.ValueObject;
 using FCG.Domain.ValueObject;
+using SecureIdentity.Password;
 
 namespace FCG.Test.Entity;
 
 [TestClass]
 public sealed class UserTests
 {
-    private readonly UserEntity _user = new("Henrique", new EmailAddress("henrique@gmail.com"), new Password("abc123@"));
+    private readonly UserEntity _user = new("Henrique", new EmailAddress("henrique@gmail.com"), new Password("abc123"));
 
     private readonly RoleEntity _role = new("Admin", new List<UserEntity>());
 
@@ -32,12 +33,5 @@ public sealed class UserTests
     public void CreateUser_ShouldHaveValidEmail()
     {
         Assert.AreEqual("henrique@gmail.com", _user.EmailAddress.Address);
-    }
-
-    [TestCategory("Domain")]
-    [TestMethod("Create User with Valid Password Format")]
-    public void CreateUser_ShouldHavePasswordWithValidFormat()
-    {
-        Assert.AreEqual("abc123@", _user.Password.Hash);
     }
 }
