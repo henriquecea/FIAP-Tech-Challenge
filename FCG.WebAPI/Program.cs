@@ -12,18 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddSwagger();
 builder.AddJwtAuthentication();
 builder.AddDbContext();
+builder.AddElasticSearch();
 
 // Serviços padrão ASP.NET
 builder.Services.AddAuthorization();
 builder.Services.AddControllers()
-       .AddNewtonsoftJson();
+                .AddNewtonsoftJson();
 
 // Injeção de dependência
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();

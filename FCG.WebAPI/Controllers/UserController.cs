@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Dto;
+using FCG.Domain.Entity.ElasticSearch;
 using FCG.Domain.Interface.Service;
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -8,39 +9,38 @@ namespace FCG.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController(IUserService userService) 
+    : ControllerBase
 {
-    private readonly IUserService _userService;
-
-    public UserController(IUserService userService)
-    {
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-    }
 
     #region User CRUD
 
     [Authorize(Roles = "Admin")]
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser([FromRoute] Guid userId) =>
-        await _userService.GetUserById(userId);
+        await userService.GetUserById(userId);
 
     [Authorize(Roles = "Admin")]
     [HttpGet()]
     public async Task<IActionResult> GetAllUsers() =>
-        await _userService.GetAllUsers();
+        await userService.GetAllUsers();
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{userId}")]
     public async Task<IActionResult> DeleteUser([FromRoute] Guid userId) =>
-        await _userService.DeleteUserById(userId);
+        await userService.DeleteUserById(userId);
 
     [HttpPost("register")]
     public async Task<IActionResult> RegisterUser(UserModel userRequest) =>
-        await _userService.CreateUser(userRequest);
+        await userService.CreateUser(userRequest);
 
     [HttpPost("authentication")]
     public async Task<IActionResult> AuthenticationUser(UserModel userRequest) =>
-        await _userService.AuthenticateUser(userRequest);
+        await userService.AuthenticateUser(userRequest);
+
+    [HttpGet("logs")]
+    public async Task<IReadOnlyCollection<UserLogEntity>> Logs([FromQuery] int page, [FromQuery] int size) =>
+        await userService.GetUserLogs(page, size);
 
     #endregion
 
@@ -49,27 +49,27 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Admin")]
     [HttpGet("roles")]
     public async Task<IActionResult> GetAllRoles() =>
-        await _userService.GetAllRoles();
+        await userService.GetAllRoles();
 
     [Authorize(Roles = "Admin")]
     [HttpPost("roles")]
     public async Task<IActionResult> CreateRoles(IEnumerable<string> rolesName) =>
-        await _userService.CreateRoles(rolesName);
+        await userService.CreateRoles(rolesName);
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("roles")]
     public async Task<IActionResult> DeleteRoles(IEnumerable<Guid> rolesId) =>
-        await _userService.DeleteRoles(rolesId);
+        await userService.DeleteRoles(rolesId);
 
     [Authorize(Roles = "Admin")]
     [HttpPatch("roles/attribute")]
     public async Task<IActionResult> AttributeRoles(CreateRoleDto roles) =>
-        await _userService.AttributeRoles(roles);
+        await userService.AttributeRoles(roles);
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("roles/attribute")]
     public async Task<IActionResult> DeleteAttributeRole(CreateRoleDto roles) =>
-        await _userService.DeleteAttributeRole(roles);
+        await userService.DeleteAttributeRole(roles);
 
     #endregion
 }

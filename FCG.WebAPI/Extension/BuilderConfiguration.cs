@@ -1,7 +1,12 @@
-﻿using FCG.Domain.Configuration;
+﻿using Elastic.Clients.Elasticsearch;
+using FCG.Domain.Configuration;
+using FCG.Domain.Interface.Client;
+using FCG.Domain.Interface.Settings;
 using FCG.Infrastructure.Data;
+using FCG.Infrastructure.Settings.Elastic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -74,5 +79,34 @@ public static class BuilderConfiguration
                 }
             });
         });
+    }
+
+    public static void AddElasticSearch(this WebApplicationBuilder builder)
+    {
+        // Bind do appsettings
+        builder.Services.Configure<ElasticSettings>(
+            builder.Configuration.GetSection("ElasticSettings")
+        );
+
+        // Interface para settings
+        builder.Services.AddSingleton<IElasticSettings>(sp =>
+            sp.GetRequiredService<IOptions<ElasticSettings>>().Value
+        );
+
+        // ElasticsearchClient (singleton)
+        builder.Services.AddSingleton(sp =>
+        {
+            var settings = sp
+                .GetRequiredService<IOptions<ElasticSettings>>()
+                .Value;
+
+            var clientSettings = new ElasticsearchClientSettings(
+                new Uri(settings.Uri)
+            );
+
+            return new ElasticsearchClient(clientSettings);
+        });
+
+        builder.Services.AddSingleton(typeof(IElasticClient<>), typeof(ElasticClient<>));
     }
 }
