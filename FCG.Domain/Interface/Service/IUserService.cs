@@ -1,4 +1,5 @@
 ﻿using FCG.Domain.Dto;
+using FCG.Domain.Entity.ElasticSearch;
 using FCG.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -79,6 +80,12 @@ public interface IUserService
     /// <param name="roles"></param>
     /// <returns></returns>
     Task<IActionResult> DeleteAttributeRole(CreateRoleDto data);
+
+    #endregion
+
+    #region Elastic Search
+
+    public Task<IReadOnlyCollection<UserLogEntity>> GetUserLogs(int page, int size);
 
     #endregion
 }
