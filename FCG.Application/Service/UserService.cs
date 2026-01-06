@@ -342,7 +342,7 @@ public class UserService(IUserRepository userRepository,
     #region Elastic Search
 
     public async Task<IReadOnlyCollection<UserLogEntity>> GetUserLogs(int page, int size) =>
-        await elasticClient.Get(page, size);
+        await elasticClient.GetLogs(page, size);
 
     #endregion
 }

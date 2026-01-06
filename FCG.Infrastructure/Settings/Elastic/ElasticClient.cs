@@ -10,7 +10,7 @@ public class ElasticClient<T>(ElasticsearchClient client)
     private static readonly IndexName Index =
         typeof(T).Name.ToLowerInvariant();
 
-    public async Task<IReadOnlyCollection<T>> Get(int page, int size)
+    public async Task<IReadOnlyCollection<T>> GetLogs(int page, int size)
     {
         var response = await client.SearchAsync<T>(s => s
             .Indices(Index)
