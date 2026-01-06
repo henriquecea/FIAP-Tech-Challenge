@@ -1,32 +1,37 @@
-name: fgc-api
+version: "3.9"
 
 services:
-  fcg-webapi:
-    container_name: fcg-webapi
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=fcg-repository;User ID=sa;Password=NovaSenhaForte123!;Trusted_Connection=False;TrustServerCertificate=True;
-    depends_on:
-      - sqlserver
-    restart: always
-
-  sqlserver:
-    container_name: sqlserver
+  sql-fcg-user:
     image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-fcg-user
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=NovaSenhaForte123!
-      - MSSQL_PID=Express
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "NovaSenhaForte123!"
+      MSSQL_PID: "Developer"
     ports:
-      - "1433:1433"
+      - "14331:1433"
     volumes:
-      - sqlserverdata:/var/opt/mssql
-    restart: always
+      - sql_fcg_user_data:/var/opt/mssql
+    command: >
+      /bin/bash -c "
+      /opt/mssql/bin/sqlservr &
+      sleep 20 &&
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'NovaSenhaForte123!' -Q 'CREATE DATABASE [fcg-user]' &&
+      wait
+      "
+
+  elastic-fcg-user:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: elastic-fcg-user
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic_fcg_user_data:/usr/share/elasticsearch/data
 
 volumes:
-  sqlserverdata:
+  sql_fcg_user_data:
+  elastic_fcg_user_data:
