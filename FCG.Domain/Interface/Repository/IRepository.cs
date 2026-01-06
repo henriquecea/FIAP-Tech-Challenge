@@ -1,4 +1,6 @@
-﻿namespace FCG.Domain.Interface.Repository;
+﻿using FCG.Domain.Entity;
+
+namespace FCG.Domain.Interface.Repository;
 
 public interface IRepository<T> where T : class
 {

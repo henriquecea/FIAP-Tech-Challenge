@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FCG.Infrastructure.Repository;
 
-public class UserRepository : Repository<UserEntity>, IUserRepository
+public class UserRepository(AppDbContext context) : Repository<UserEntity>(context), IUserRepository
 {
-    public UserRepository(AppDbContext context) : base(context) { }
-
     public async Task<UserEntity?> GetByEmailAsync(string email) =>
         await _dbSet.AsNoTracking()
                     .Include(x => x.Roles)

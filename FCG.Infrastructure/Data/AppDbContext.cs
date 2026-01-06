@@ -8,7 +8,6 @@ namespace FCG.Infrastructure.Data;
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<UserEntity> Users { get; set; } = null!;
-    public DbSet<GameEntity> Games { get; set; } = null!;
     public DbSet<RoleEntity> Roles { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,7 +15,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfiguration(new UserMap());
-        modelBuilder.ApplyConfiguration(new GameMap());
         modelBuilder.ApplyConfiguration(new RoleMap());
     }
 }
