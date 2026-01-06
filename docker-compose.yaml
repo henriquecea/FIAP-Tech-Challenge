@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  sql-fcg-user:
+  sql-fcg-users:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sql-fcg-user
+    container_name: sql-fcg-users
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "NovaSenhaForte123!"
@@ -11,13 +11,22 @@ services:
     ports:
       - "14331:1433"
     volumes:
-      - sql_fcg_user_data:/var/opt/mssql
+      - sql_fcg_users_data:/var/opt/mssql
+
+  sql-tools-fcg-users:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sql-tools-fcg-users
+    depends_on:
+      - sql-fcg-users
+    entrypoint: /bin/bash
     command: >
-      /bin/bash -c "
-      /opt/mssql/bin/sqlservr &
-      sleep 20 &&
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'NovaSenhaForte123!' -Q 'CREATE DATABASE [fcg-user]' &&
-      wait
+      -c "
+      echo 'Aguardando SQL Server...';
+      until /opt/mssql-tools/bin/sqlcmd -S sql-fcg-users -U sa -P 'NovaSenhaForte123!' -Q 'SELECT 1' &> /dev/null; do
+        sleep 2;
+      done;
+      echo 'SQL Server pronto. Criando banco se não existir...';
+      /opt/mssql-tools/bin/sqlcmd -S sql-fcg-users -U sa -P 'NovaSenhaForte123!' -Q \"IF DB_ID('fcg-users') IS NULL CREATE DATABASE [fcg-users]\"
       "
 
   elastic-fcg-user:
@@ -33,5 +42,5 @@ services:
       - elastic_fcg_user_data:/usr/share/elasticsearch/data
 
 volumes:
-  sql_fcg_user_data:
+  sql_fcg_users_data:
   elastic_fcg_user_data:
