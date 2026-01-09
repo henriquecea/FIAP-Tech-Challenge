@@ -27,6 +27,7 @@ A arquitetura é organizada em camadas bem definidas, garantindo que regras de n
 - 🐳 **Docker & Docker Compose**
 - 🌐 **RESTful APIs**
 - 🧼 **Clean Architecture**
+- 📑 **Swagger / OpenAPI** (documentação da API)
 
 ---
 
@@ -37,13 +38,14 @@ A arquitetura é organizada em camadas bem definidas, garantindo que regras de n
 - ✅ Utilizar containerização para padronizar e simplificar o ambiente  
 - ✅ Integrar banco de dados relacional e mecanismo de busca  
 - ✅ Expor uma API RESTful robusta e organizada  
+- ✅ Disponibilizar documentação interativa via Swagger  
 - ✅ Simular um cenário próximo ao ambiente profissional  
 
 ---
 
 ## 🏗️ Estrutura do Projeto (Camadas)
 
-- **API** — Camada de apresentação (Controllers, Middlewares, Configurações)
+- **API** — Camada de apresentação (Controllers, Middlewares, Swagger, Configurações)
 - **Application** — Casos de uso, DTOs e regras de aplicação
 - **Domain** — Regras de negócio e entidades
 - **Infrastructure** — Persistência de dados, Elasticsearch, serviços externos
@@ -53,6 +55,8 @@ A arquitetura é organizada em camadas bem definidas, garantindo que regras de n
 ## 🚀 Execução do Projeto
 
 O ambiente pode ser executado facilmente utilizando **Docker Compose**, garantindo que todas as dependências (API, SQL Server e Elasticsearch) estejam disponíveis de forma padronizada.
+
+A documentação da API pode ser acessada via **Swagger UI** após a execução do projeto.
 
 > Este projeto tem caráter **acadêmico**, mas segue práticas e padrões utilizados em projetos reais de mercado.
 
