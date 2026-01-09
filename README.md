@@ -1,4 +1,4 @@
-# 🔷 FGC API — Projeto de Arquitetura de Sistemas (.NET)
+# 🔷 FGC API Users — Projeto da Pós em Arquitetura de Sistemas (.NET)
 
 Este repositório contém uma **API desenvolvida em ASP.NET Core 8.0**, criada como parte do projeto da disciplina de **Arquitetura de Sistemas** da pós-graduação.  
 O projeto tem como foco a aplicação de **princípios de arquitetura moderna**, **boas práticas de engenharia de software** e **uso de tecnologias amplamente adotadas no mercado**.
