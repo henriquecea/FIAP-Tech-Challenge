@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+      - '*'  # Executa em qualquer branch (commits diretos)
+
+pr:
+  branches:
+    include:
+      - master  # Executa quando um PR é criado ou atualizado para 'master'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Instalar .NET 8 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dotnet --info
+  displayName: 'Verificar versão do .NET instalada'
+
+- script: dotnet restore FCG.WebAPI/FCG.Application.sln
+  displayName: 'Restaurar pacotes NuGet'
+
+- script: dotnet build FCG.WebAPI/FCG.Application.sln --configuration $(buildConfiguration) --no-restore
+  displayName: 'Compilar projeto'
+
+- script: dotnet test FCG.WebAPI/FCG.Application.sln --configuration $(buildConfiguration) --no-build --verbosity normal
+  displayName: 'Executar testes'

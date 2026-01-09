@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    include:
+      - master  # Executa apenas quando houver merge no branch principal
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Instalar .NET 8 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '8.0.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- script: dotnet restore FCG.WebAPI/FCG.Application.sln
+  displayName: 'Restaurar pacotes NuGet'
+
+- script: dotnet build FCG.WebAPI/FCG.Application.sln --configuration $(buildConfiguration) --no-restore
+  displayName: 'Compilar projeto'
+
+- script: dotnet publish FCG.WebAPI/FCG.Application.sln --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+  displayName: 'Publicar aplicação'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publicar artefatos'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'fcg-build'
