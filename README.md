@@ -1,31 +1,63 @@
-# 🔷 FGC API — Projeto .NET de Arquitetura de Sistemas
+# 🔷 FGC API — Projeto de Arquitetura de Sistemas (.NET)
 
-Este repositório contém uma **API desenvolvida em ASP.NET Core 8.0** como parte do projeto de **Arquitetura de Sistemas** da pós-graduação.  
-O foco está na aplicação de **princípios de arquitetura moderna**, como:
+Este repositório contém uma **API desenvolvida em ASP.NET Core 8.0**, criada como parte do projeto da disciplina de **Arquitetura de Sistemas** da pós-graduação.  
+O projeto tem como foco a aplicação de **princípios de arquitetura moderna**, **boas práticas de engenharia de software** e **uso de tecnologias amplamente adotadas no mercado**.
 
-- Organização por camadas
-- Clean Architecture
-- Containerização com Docker
-- Adoção de boas práticas de desenvolvimento profissional
+---
+
+## 🧩 Visão Geral da Arquitetura
+
+A aplicação foi estruturada seguindo os conceitos de **Clean Architecture**, promovendo:
+
+- Separação clara de responsabilidades  
+- Baixo acoplamento entre camadas  
+- Facilidade de manutenção e evolução  
+- Testabilidade e escalabilidade  
+
+A arquitetura é organizada em camadas bem definidas, garantindo que regras de negócio não dependam de detalhes de infraestrutura.
 
 ---
 
 ## 📦 Tecnologias Utilizadas
 
 - 🧠 **ASP.NET Core 8.0**
-- 🛢️ **SQL Server 2022** (via Docker)
+- 🛢️ **SQL Server 2022** (containerizado via Docker)
 - 🧱 **Entity Framework Core**
+- 🔍 **Elasticsearch** (indexação e busca)
 - 🐳 **Docker & Docker Compose**
 - 🌐 **RESTful APIs**
 - 🧼 **Clean Architecture**
 
 ---
 
-## 🎓 Objetivos Acadêmicos
+## 🎯 Objetivos do Projeto
 
-- ✅ Aplicar princípios modernos de arquitetura em .NET  
-- ✅ Utilizar containerização para simplificar o setup do ambiente  
-- ✅ Separar responsabilidades entre camadas (API, domínio, dados etc.)  
-- ✅ Expor uma API RESTful funcional com persistência em banco de dados  
+- ✅ Aplicar princípios modernos de arquitetura de software em .NET  
+- ✅ Implementar Clean Architecture com separação de camadas  
+- ✅ Utilizar containerização para padronizar e simplificar o ambiente  
+- ✅ Integrar banco de dados relacional e mecanismo de busca  
+- ✅ Expor uma API RESTful robusta e organizada  
+- ✅ Simular um cenário próximo ao ambiente profissional  
 
 ---
+
+## 🏗️ Estrutura do Projeto (Camadas)
+
+- **API** — Camada de apresentação (Controllers, Middlewares, Configurações)
+- **Application** — Casos de uso, DTOs e regras de aplicação
+- **Domain** — Regras de negócio e entidades
+- **Infrastructure** — Persistência de dados, Elasticsearch, serviços externos
+
+---
+
+## 🚀 Execução do Projeto
+
+O ambiente pode ser executado facilmente utilizando **Docker Compose**, garantindo que todas as dependências (API, SQL Server e Elasticsearch) estejam disponíveis de forma padronizada.
+
+> Este projeto tem caráter **acadêmico**, mas segue práticas e padrões utilizados em projetos reais de mercado.
+
+---
+
+## 📚 Considerações Finais
+
+Este repositório demonstra a aplicação prática de conceitos fundamentais de arquitetura de software, preparando o projeto para escalabilidade, manutenção e futuras evoluções.
